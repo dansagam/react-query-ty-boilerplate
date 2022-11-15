@@ -1,19 +1,30 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./index.css";
 import ThemeConfig from "themes";
-import { Provider } from "react-redux";
-import { store } from "stores/store";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+      cacheTime: 60000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
-  <Provider store={store}>
+  <QueryClientProvider client={queryClient}>
     <ThemeConfig>
       <App />
     </ThemeConfig>
-  </Provider>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
